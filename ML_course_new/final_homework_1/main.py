@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpldatacursor import datacursor
 GD_LEARNING_RATE = 0.00001
-SGD_LEARNING_RATE = 0.00001
+SGD_LEARNING_RATE = 0.00005
 N = 2000
 
 
@@ -67,7 +67,7 @@ def main():
     ax2 = plt.subplot2grid((1, 2), (0, 1))
     p3, = ax2.plot(data[0,:], data[1,:], 'b.', label='uniform distribution')
     c_p.reset()
-    for i in range(500):
+    for i in range(100):
         rand_index = np.random.randint(0, N-1, size=500)
         sample_data_x = []
         sample_data_y = []

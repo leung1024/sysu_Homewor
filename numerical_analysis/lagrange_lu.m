@@ -1,4 +1,4 @@
-function [L_x, l_x] = lagrange_lu(X, Y, XX, YY, N)
+function [L_x, l_x] = lagrange_lu(X, XX, YY, N)
     l_x = ones(N + 1, length(X));
     L_x = zeros(1, length(X));
     for i = 1:N+1,

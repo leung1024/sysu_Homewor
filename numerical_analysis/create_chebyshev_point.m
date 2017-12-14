@@ -1,4 +1,4 @@
-function t = create_chebyshev_point(N),
+function t = create_chebyshev_point(N)
     t = zeros(1, N);
     for i = 1:N,
         t(i) = cos((2*i - 1) * pi / (2*N));

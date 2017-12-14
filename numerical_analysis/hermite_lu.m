@@ -1,8 +1,8 @@
 function f = hermite_lu(X, XX, YY, Yd)
-    % X x轴刻度值
-    % XX 插值点
-    % YY 插值点的函数值
-    % Yd 插值点的导数值
+    % X     x轴刻度值
+    % XX    插值点
+    % YY    插值点的函数值
+    % Yd    插值点的导数值
     f = zeros(1, length(X));
     n = length(XX);
     for i=1:n

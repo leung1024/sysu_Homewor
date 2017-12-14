@@ -1,4 +1,8 @@
-function [L_x, l_x] = lagrange_lu(X, XX, YY, N)
+function L_x = lagrange_lu(X, XX, YY, N)
+    % X     x轴刻度值
+    % XX    插值点
+    % YY    插值点的函数值
+    % N   	Lagrange的阶数
     l_x = ones(N + 1, length(X));
     L_x = zeros(1, length(X));
     for i = 1:N+1,

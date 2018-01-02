@@ -16,12 +16,12 @@ import numpy as np
 
 class NeuralNetwork():
 
-    def __init__(self, network_sizes, weights=[], biases=[]):
+    def __init__(self, network_sizes, w_b=[]):
         self.sizes = network_sizes
         self.layer_sizes = len(network_sizes)
         if weights and biases:
-            self.weights = weights
-            self.biases = biases
+            [self.format_check(item) for item in w_b]
+            self.w_b = w_b
         else:
             pass
             # self.weights = np.array([np.random.randn(y, x) for x, y in zip(network_sizes[:-1], sizes[1:])])
@@ -32,14 +32,14 @@ class NeuralNetwork():
             if type(val) != np.narray:
                 raise TypeError
 
-    def activation_function(self):
+    def activation_function(self, *args):
         return numpy.tanh()
 
     def feedforward(self, input_val):
         self.format_check(input_val)
-        for layer_num in range(self.layer_sizes):
-            input_val = np.dot(input_val.T, self.weights[layer_num]) + self.biases[layer_num]
-        output_val = input_val
+        for layer_args in self.w_b:
+            input_val = np.dot(input_val.T, layer_args)
+        output_val = numpy.tanh(input_val)
         return output_val
 
 

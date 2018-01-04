@@ -38,6 +38,9 @@ class NeuralNetwork():
             if type(val) != np.ndarray:
                 raise TypeError
 
+    def cost_function(self, exp_val, act_val):
+        return sum((act_val-exp_val)**2) / 2
+
     def transfer_function(self, input_val):
         a = 1.716
         b = 2/3
@@ -55,8 +58,18 @@ class NeuralNetwork():
         output_val = input_val
         return output_val
 
-    # def stochastic_backpropagation(self, theta, eta, m):
-        
+    def stochastic_backpropagation(self, input_val, act_val, theta, eta):
+        m = 0
+        while True:
+            cur_output = self.feedforward(input_val)
+            j_val = self.cost_function(cur_output, act_val)
+            if j_val < theta:
+                break
+            # choosen pattern
+            index_m = np.random
+        for layer_args in self.w_b[::-1]:
+
+
 
 
 

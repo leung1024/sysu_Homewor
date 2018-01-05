@@ -12,6 +12,7 @@
 #
 #=============================================================================
 import numpy as np
+import random
 
 
 class NeuralNetwork():
@@ -54,6 +55,8 @@ class NeuralNetwork():
 
     def feedforward(self, input_val):
         self.format_check(input_val)
+        if input_val.shape != (1, input_val.size):
+            input_val = np.reshape(input_val,[1, len(input_val)])
         self.t_output = []
         self.raw_output = []
         for layer_args in self.w_b:
@@ -65,31 +68,45 @@ class NeuralNetwork():
         output_val = input_val
         return output_val
 
-    def stochastic_backpropagation(self, input_val, act_val, theta, eta, pattern_num=2):
-        m = 0
-        input_val_len = len(input_val)
-        if pattern_num <= 0 or pattern_num > input_val_len:
-            print('Please use a vaild pattern_num')
-            raise ValueError
+    def stochastic_backpropagation(self, data_set, label, theta, eta, pattern_num=2, max_step=100):
+        step = 0
+        # input_val_len = len(input_val)
+        # input_val = np.reshape(input_val,[1, input_val_len])
+        # if pattern_num <= 0 or pattern_num > input_val_len:
+        #     print('Please use a vaild pattern_num')
+        #     raise ValueError
         while True:
-            import pdb;pdb.set_trace()
+            # choose a pattern
+            if len(data_set[0]) != self.sizes[0]:
+                print('Please use a vaild data_set')
+                raise ValueError
+            pattern_index = random.randint(0, len(data_set) - 1)
+            input_val = data_set[pattern_index]
+            act_val = np.array(label[pattern_index])
+            input_val = np.reshape(input_val,[1, len(input_val)])
             cur_output = self.feedforward(input_val)
             j_val = self.cost_function(cur_output, act_val)
-            if j_val < theta or input_val_len < m:
+
+            if j_val < theta or step > max_step:
+                print(j_val)
+                print(step)
                 break
             # choosen pattern
-            pattern_index = np.random.randint(0, input_val_len-1, [pattern_num])
+            # pattern_index = random.sample(range(input_val_len), pattern_num)
+            # pattern_index = sorted(pattern_index)
             # try to update weight
             f_net_k = self.raw_output[1]
-            f_net_j = np.cosh(self.net_function(input_val, self.w_b[0]))
+            f_net_j = 1 - np.tanh(self.net_function(input_val, self.w_b[0]))**2
             delta_k = (act_val - cur_output) * f_net_k
             delta_j = f_net_j * np.dot(delta_k, self.w_b[1][1:,:])
             omega_1 = self.w_b[0][1:,:]
-            omega_1[pattern_index] += eta * input_val[pattern_index].T * delta_j
+            # omega_1[pattern_index] -= eta * input_val.T[pattern_index] * delta_j
+            omega_1 -= eta * input_val.T * delta_j
             omega_2 = self.w_b[1][1:,:]
-            omega_2 += eta * self.t_output[0].T * delta_k
+            omega_2 -= eta * self.t_output[0].T * delta_k
             self.w_b[0][1:,:] = omega_1
             self.w_b[1][1:,] = omega_2
+            step += 1
 
 
 

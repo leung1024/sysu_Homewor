@@ -60,5 +60,31 @@ def Exercise1_b():
     plt.ylabel("X2")
     plt.show()
 
+
+def Exercise2_a():
+    # create a 3-1-1 network
+    network_size = np.array([3, 1, 1])
+    # set weights and bias
+    w_b = []
+    net_obj = NeuralNetwork(network_size, w_b)
+    # generate sample points
+    samples = np.random.uniform(-5, 5, [2, N])
+    samples[1,:] *= -1
+    plt.figure()
+    # for index in range(samples.shape[1]):
+    #     x1 = samples[0, index]
+    #     x2 = samples[1, index]
+    rst = net_obj.feedforward(np.array([0.28, 1.31, -6.2]))
+    net_obj.stochastic_backpropagation(np.array([0.28, 1.31, -6.2]), np.array([1]), 0.1, 0.1, pattern_num=2)
+    #     if rst <= 0:
+    #         plt.plot(x1, x2, 'or')
+    #     else:
+    #         plt.plot(x1, x2, 'ob')
+    # plt.xlabel("X1")
+    # plt.ylabel("X2")
+    # plt.show()
+    net_obj.w_b
+
 # Exercise1_a()
 # Exercise1_b()
+Exercise2_a()

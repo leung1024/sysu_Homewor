@@ -93,12 +93,11 @@ def Exercise2_a():
     # generate sample points
     samples = np.random.uniform(-5, 5, [2, N])
     samples[1,:] *= -1
-    plt.figure()
     # for index in range(samples.shape[1]):
     #     x1 = samples[0, index]
     #     x2 = samples[1, index]
     rst = net_obj.feedforward(np.array([0.28, 1.31, -6.2]))
-    net_obj.stochastic_backpropagation(DATASET, LABEL, 0.001, 0.1, pattern_num=2, max_step=10000)
+    net_obj.stochastic_backpropagation(DATASET, LABEL, 0, 0.1, max_step=5000)
     #     if rst <= 0:
     #         plt.plot(x1, x2, 'or')
     #     else:
@@ -106,8 +105,11 @@ def Exercise2_a():
     # plt.xlabel("X1")
     # plt.ylabel("X2")
     # plt.show()
-    rst = net_obj.feedforward(np.array([0.28, 1.31, -6.2]))
-    print(np.sign(rst))
+    net_obj.plot_learning_curve()
+    rst1 = net_obj.feedforward(np.array([0.28, 1.31, -6.2]))
+    rst2 = net_obj.feedforward(np.array([0.26 ,1.94 , 0.08]))
+    print(np.sign(rst1))
+    print(np.sign(rst2))
 
 # Exercise1_a()
 # Exercise1_b()

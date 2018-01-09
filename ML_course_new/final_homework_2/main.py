@@ -97,7 +97,7 @@ def Exercise2_a():
     #     x1 = samples[0, index]
     #     x2 = samples[1, index]
     rst = net_obj.feedforward(np.array([0.28, 1.31, -6.2]))
-    net_obj.stochastic_backpropagation(DATASET, LABEL, 0, 0.1, max_step=5000)
+    net_obj.stochastic_backpropagation(DATASET, LABEL, 0, 0.03, max_step=5000)
     #     if rst <= 0:
     #         plt.plot(x1, x2, 'or')
     #     else:

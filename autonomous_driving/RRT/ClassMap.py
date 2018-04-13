@@ -12,7 +12,7 @@ class ClassMap():
     def generate_map(self, row, col):
         return np.zeros([self.row, self.col])
 
-    def generate_obstacle(self, n=2):
+    def generate_obstacle(self, n=4):
         for i in range(n):
             obstc_x = np.random.randint(0, self.col)
             obstc_y = np.random.randint(0, self.row)
@@ -23,13 +23,16 @@ class ClassMap():
 
     def draw_map(self, path=None, edge=None):
         plt.imshow(self.map)
-        # plot(col, row)
-
         if path:
-            for point in path:
-                plt.plot(point[1], point[0], 'bo')
-
-            # plt.plot(edge[:, point[0], 'bo')
+            cur_point = path[0]
+            plt.plot(cur_point[1], cur_point[0], 'bo')
+            for next_point in path[1:]:
+                plt.plot(next_point[1], next_point[0], 'bo')
+                plt.plot([cur_point[1], next_point[1]],[cur_point[0], next_point[0]], 'm')
+                cur_point = next_point
+        if edge:
+            for edge_item in edge:
+                plt.plot([edge_item[1][1], edge_item[0][1]],[edge_item[1][0], edge_item[0][0]], 'w')
         plt.plot(self.begin[1], self.begin[0], 'ro')
         plt.plot(self.goal[1], self.goal[0], 'go')
         plt.show()
@@ -60,8 +63,3 @@ class ClassMap():
         print(self.map[self.goal_row, self.goal_col])
         print(self.init_row, self.init_col)
         print(self.map[self.init_row, self.init_col])
-
-# m = ClassMap(100,100)
-# m.generate_obstacle()
-# m.init_goal_and_begin_point()
-# m.draw_map()

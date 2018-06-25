@@ -6,33 +6,33 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
-BATCH_SIZE = 2
-CAPACITY = 256
-IMG_W = 208
-IMG_H = 208
+# BATCH_SIZE = 2
+# CAPACITY = 256
+# IMG_W = 208
+# IMG_H = 208
 
-train_dir = "data/train"
-image_list, label_list = DataCollector.read_files(train_dir)
-image_batch, label_batch = DataCollector.get_batch(image_list, label_list, IMG_W, IMG_H, BATCH_SIZE, CAPACITY)
+# train_dir = "data/train"
+# image_list, label_list = DataCollector.read_files(train_dir)
+# image_batch, label_batch = DataCollector.get_batch(image_list, label_list, IMG_W, IMG_H, BATCH_SIZE, CAPACITY)
 
-with tf.Session() as sess:
-    i = 0
-    coord = tf.train.Coordinator()
-    threads = tf.train.start_queue_runners(coord=coord)
-    try:
-        while not coord.should_stop() and i < 1:
-            img, label = sess.run([image_batch, label_batch])
+# with tf.Session() as sess:
+#     i = 0
+#     coord = tf.train.Coordinator()
+#     threads = tf.train.start_queue_runners(coord=coord)
+#     try:
+#         while not coord.should_stop() and i < 1:
+#             img, label = sess.run([image_batch, label_batch])
 
-            for j in np.arange(BATCH_SIZE):
-                print("label: %d" % label[j])
-                plt.imshow(img[j, :, :, :])
-                plt.show()
-            i += 1
-    except tf.errors.OutOfRangeError:
-        print("done!")
-    finally:
-        coord.request_stop()
-    coord.join(threads)
+#             for j in np.arange(BATCH_SIZE):
+#                 print("label: %d" % label[j])
+#                 plt.imshow(img[j, :, :, :])
+#                 plt.show()
+#             i += 1
+#     except tf.errors.OutOfRangeError:
+#         print("done!")
+#     finally:
+#         coord.request_stop()
+#     coord.join(threads)
 
 
 N_CLASSES = 2
@@ -91,58 +91,58 @@ def run_training():
     sess.close()
 
 # 评估模型
-from PIL import Image
-import matplotlib.pyplot as plt
+# from PIL import Image
+# import matplotlib.pyplot as plt
 
 
-def get_one_image(train):
-    n = len(train)
-    ind = np.random.randint(0, n)
-    img_dir = train[ind]
+# def get_one_image(train):
+#     n = len(train)
+#     ind = np.random.randint(0, n)
+#     img_dir = train[ind]
 
-    image = Image.open(img_dir)
-    plt.imshow(image)
-    plt.show()
-    image = image.resize([208, 208])
-    image = np.array(image)
-    return image
+#     image = Image.open(img_dir)
+#     plt.imshow(image)
+#     plt.show()
+#     image = image.resize([208, 208])
+#     image = np.array(image)
+#     return image
 
 
-def evaluate_one_image():
-    train_dir = "C:\\Users\\panch\\Documents\\PycharmProjects\\Cats_vs_Dogs\\data\\train\\"
-    train, train_label = DataCollector.read_files(train_dir)
-    image_array = get_one_image(train)
+# def evaluate_one_image():
+#     train_dir = "C:\\Users\\panch\\Documents\\PycharmProjects\\Cats_vs_Dogs\\data\\train\\"
+#     train, train_label = DataCollector.read_files(train_dir)
+#     image_array = get_one_image(train)
 
-    with tf.Graph().as_default():
-        BATCH_SIZE = 1
-        N_CLASSES = 2
+#     with tf.Graph().as_default():
+#         BATCH_SIZE = 1
+#         N_CLASSES = 2
 
-        image = tf.cast(image_array, tf.float32)
-        image = tf.reshape(image, [1, 208, 208, 3])
-        logit = NeuralNetwork.inference(image, BATCH_SIZE, N_CLASSES)
-        logit = tf.nn.softmax(logit)
+#         image = tf.cast(image_array, tf.float32)
+#         image = tf.reshape(image, [1, 208, 208, 3])
+#         logit = NeuralNetwork.inference(image, BATCH_SIZE, N_CLASSES)
+#         logit = tf.nn.softmax(logit)
 
-        x = tf.placeholder(tf.float32, shape=[208, 208, 3])
+#         x = tf.placeholder(tf.float32, shape=[208, 208, 3])
 
-        logs_train_dir = "C:\\Users\\panch\\Documents\\PycharmProjects\\Cats_vs_Dogs\\logs\\"
-        saver = tf.train.Saver()
+#         logs_train_dir = "C:\\Users\\panch\\Documents\\PycharmProjects\\Cats_vs_Dogs\\logs\\"
+#         saver = tf.train.Saver()
 
-        with tf.Session() as sess:
-            print("Reading checkpoints...")
-            ckpt = tf.train.get_checkpoint_state(logs_train_dir)
-            if ckpt and ckpt.model_checkpoint_path:
-                global_step = ckpt.model_checkpoint_path.split("/")[-1].split("-")[-1]
-                saver.restore(sess, ckpt.model_checkpoint_path)
-                print("Loading success, global_step is %s" % global_step)
-            else:
-                print("No checkpoint file found")
+#         with tf.Session() as sess:
+#             print("Reading checkpoints...")
+#             ckpt = tf.train.get_checkpoint_state(logs_train_dir)
+#             if ckpt and ckpt.model_checkpoint_path:
+#                 global_step = ckpt.model_checkpoint_path.split("/")[-1].split("-")[-1]
+#                 saver.restore(sess, ckpt.model_checkpoint_path)
+#                 print("Loading success, global_step is %s" % global_step)
+#             else:
+#                 print("No checkpoint file found")
 
-            prediction = sess.run(logit, feed_dict={x: image_array})
-            max_index = np.argmax(prediction)
-            if max_index == 0:
-                print("This is a cat with possibility %.6f" % prediction[:, 0])
-            else:
-                print("This is a dog with possibility %.6f" % prediction[:, 1])
+#             prediction = sess.run(logit, feed_dict={x: image_array})
+#             max_index = np.argmax(prediction)
+#             if max_index == 0:
+#                 print("This is a cat with possibility %.6f" % prediction[:, 0])
+#             else:
+#                 print("This is a dog with possibility %.6f" % prediction[:, 1])
 
 
 run_training()
